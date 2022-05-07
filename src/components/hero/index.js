@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Container, TextField, Typography } from "@mui/material";
-import CustomizedSearchBase from "./searchBox";
+import CustomizedSearchBase from "../searchBox";
 
 const Header = styled('header')({
   backgroundImage: `url("https://images.pexels.com/photos/8775535/pexels-photo-8775535.jpeg?auto=compress&cs=tinysrgb&fit=crop&fp-y=0.5&h=500&sharp=10&w=1400")`,
