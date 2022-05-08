@@ -3,16 +3,29 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { fetchResource } from '../../utils/fetch';
+import { debounceFn } from '../../utils/debounceFn';
 
 export default function TabOne() {
   const [photos, setPhotos] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [tooManyReqError, setTooManyReqError] = React.useState(false);
-
   const CURATED_PHOTOS_URL = "https://api.pexels.com/v1/curated?per_page=49";
-
   const photoUrl = (pNum) => CURATED_PHOTOS_URL + `&page=${pNum || pageNumber}`;
+  const debouncedFetchFn = debounceFn(fetchFn, 1000);
+  
+  function fetchFn() {
+    if (!loading) {
+      setLoading(true);
+      fetchResource(photoUrl(pageNumber + 1), setTooManyReqError).then(newPhotos => {
+        setPhotos([...photos, ...newPhotos.photos]);
+        setLoading(false);
+        setPageNumber(pageNumber + 1);
+      }).catch(e => {
+        setLoading(false);
+      })
+    }
+  }
 
   React.useEffect(() => {
     fetchResource(photoUrl(), setTooManyReqError).then(photos => setPhotos(photos.photos));
@@ -26,14 +39,7 @@ export default function TabOne() {
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrollRatio = winScroll / height;
     if (scrollRatio > 0.95) {
-      if (!loading) {
-        setLoading(true);
-        fetchResource(photoUrl(pageNumber + 1), setTooManyReqError).then(newPhotos => {
-          setPhotos([...photos, ...newPhotos.photos]);
-          setLoading(false);
-          setPageNumber(pageNumber + 1);
-        })
-      }
+      debouncedFetchFn()
     }
   }
 
