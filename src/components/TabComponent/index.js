@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { CircularProgress, Container } from '@mui/material';
 import TabOne from "./ImageTab"
+import VideoTab from './VideoTab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,8 +60,8 @@ export default function BasicTabs() {
 
           >
             <Tab label="Home" {...a11yProps(0)} />
-            <Tab label="Discover" {...a11yProps(1)} />
-            <Tab label="Videos" {...a11yProps(2)} />
+            <Tab label="Videos" {...a11yProps(1)} />
+            <Tab label="Discover" {...a11yProps(2)} />
           </Tabs>
         </Container>
       </Box>
@@ -68,12 +69,10 @@ export default function BasicTabs() {
         <TabOne />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <video muted preload='none' loop autoPlay>
-          <source src="https://player.vimeo.com/external/442255041.sd.mp4?s=c6894ba65bc97d9121a6f4457f24ed6d7d0aca68&profile_id=139&oauth2_token_id=57447761" type="video/mp4" />
-        </video>
+        <VideoTab />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <TabOne />
       </TabPanel>
     </Box>
   );

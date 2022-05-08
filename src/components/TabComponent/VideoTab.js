@@ -4,20 +4,20 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { fetchResource } from '../../utils/fetch';
 
-export default function TabOne() {
-  const [photos, setPhotos] = React.useState(null);
+export default function VideoTab() {
+  const [videos, setVideos] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [tooManyReqError, setTooManyReqError] = React.useState(false);
 
-  const CURATED_PHOTOS_URL = "https://api.pexelsqw.com/v1/curated?per_page=49";
+  const POPULAR_VIDEOS_URL = "https://api.pexelss.com/videos/popular?per_page=10";
 
-  const photoUrl = (pNum) => CURATED_PHOTOS_URL + `&page=${pNum || pageNumber}`;
+  const videoUrl = (pNum) => POPULAR_VIDEOS_URL + `&page=${pNum || pageNumber}`;
 
   React.useEffect(() => {
-    fetchResource(photoUrl(), setTooManyReqError).then(photos => setPhotos(photos.photos));
-    window.addEventListener("scroll", scrollEvent)
-    return () => window.removeEventListener("scroll", scrollEvent);
+    fetchResource(videoUrl(), tooManyReqError,setTooManyReqError).then(videos => setVideos(videos.videos));
+    // window.addEventListener("scroll", scrollEvent)
+    // return () => window.removeEventListener("scroll", scrollEvent);
   }, []);
 
   function scrollEvent() {
@@ -28,8 +28,8 @@ export default function TabOne() {
     if (scrollRatio > 0.95) {
       if (!loading) {
         setLoading(true);
-        fetchResource(photoUrl(pageNumber + 1), setTooManyReqError).then(newPhotos => {
-          setPhotos([...photos, ...newPhotos.photos]);
+        fetchResource(videoUrl(pageNumber + 1), tooManyReqError, setTooManyReqError).then(newVideos => {
+          setVideos([...videos, ...newVideos.videos]);
           setLoading(false);
           setPageNumber(pageNumber + 1);
         })
@@ -37,22 +37,25 @@ export default function TabOne() {
     }
   }
 
-  if (!photos && tooManyReqError) {
+  if (!videos && tooManyReqError) {
     return <Typography variant='h6'>
       Too Many Request To Pexels Server: The Free API service Provided by Pexels has reached limit, try after some time
     </Typography>
   }
 
-  if (!photos) {
+  if (!videos) {
     return <CircularProgress />
   }
 
   return (
     <div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-        {photos.map(photo => {
+        {videos.map(video => {
+          console.log({video})
           return (<Box >
-            <img src={photo.src.medium} alt={photo.photographer} />
+            <video muted preload='none' loop autoPlay>
+              <source src={video.video_files[3].link} type="video/mp4" />
+            </video>
           </Box>)
         })}
       </div>
