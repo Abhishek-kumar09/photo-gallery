@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import HeroComponent from './components/hero';
 import BasicTabs from './components/TabComponent';
