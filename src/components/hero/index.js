@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
-import { Container, TextField, Typography } from "@mui/material";
+import { Container, Grid, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import { useState } from "react";
+import { fetchResource } from "../../utils/fetch";
 import CustomizedSearchBase from "../searchBox";
 
 const Header = styled('header')({
@@ -20,16 +23,34 @@ const Header = styled('header')({
 });
 
 export default function HeroComponent() {
+  const [queriedPhotos, setQueriedPhotos] = useState([1, 2, 3, 4, 5]);
+
+  function onSubmit(query) {
+    const BASE_URL = `https://api.pexels.com/v1/search?query=${query}&per_page=1`
+    fetchResource(BASE_URL).then(({photos}) => {
+      console.log({photos})
+      setQueriedPhotos(photos[0]?.src?.medium)
+    })    
+  }
+  
   return (
     <Header className="App-header">
-      <Container style={{ zIndex: 2 }} >
+      <Container style={{ zIndex: 2, padding: "24px" }}  >
         <Typography variant="h3" fontWeight={600}>
           The best free stock photos, royalty free images & videos shared by creators.
         </Typography>
-        <CustomizedSearchBase placeholder="Search for Free Photos and videos" />
+        <CustomizedSearchBase onSubmit={onSubmit} placeholder="Search for Free Photos and videos" />
         <Typography variant="caption" textAlign={"left"} display="block" p={"8px 0px"}>
           Suggested: mothers day, landscape, forest, flowers, nature mother more
         </Typography>
+        {
+          queriedPhotos ? (
+            <img
+              src={queriedPhotos}
+              style={{width: "inherit", maxHeight: "50vh" }}
+            />
+          ) : null
+        }
       </Container>
     </Header>
   )

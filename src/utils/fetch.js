@@ -15,7 +15,7 @@ export async function fetchResource(url, tooManyReq, handleTooManyReq) {
         return res.json()
       }
 
-      if (res.status == 429) {
+      if (res.status == 429 && handleTooManyReq) {
         handleTooManyReq(true);
       }
     })

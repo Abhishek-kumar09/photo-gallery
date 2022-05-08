@@ -9,8 +9,11 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 
 export default function CustomizedSearchBase({
   placeholder,
-  value
+  value,
+  onSubmit
 }) {
+  const [searchText, setSearchText] = React.useState("");
+  
   return (
     <Paper
       component="form"
@@ -19,10 +22,14 @@ export default function CustomizedSearchBase({
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder={placeholder}
-        value={value}
+        value={searchText}
+        onChange={(e)=>setSearchText(e.target.value)}
         inputProps={{ 'aria-label': 'search google maps' }}
       />
-      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" onClick={(e) => {
+        e.preventDefault();
+        onSubmit(searchText);
+      }}>
         <SearchIcon />
       </IconButton>
     </Paper>

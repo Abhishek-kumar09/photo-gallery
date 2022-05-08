@@ -10,7 +10,7 @@ export default function TabOne() {
   const [pageNumber, setPageNumber] = React.useState(1);
   const [tooManyReqError, setTooManyReqError] = React.useState(false);
 
-  const CURATED_PHOTOS_URL = "https://api.pexelsqw.com/v1/curated?per_page=49";
+  const CURATED_PHOTOS_URL = "https://api.pexels.com/v1/curated?per_page=49";
 
   const photoUrl = (pNum) => CURATED_PHOTOS_URL + `&page=${pNum || pageNumber}`;
 
