@@ -16,11 +16,11 @@ export default function TabOne() {
 
   React.useEffect(() => {
     fetchResource(photoUrl(), setTooManyReqError).then(photos => setPhotos(photos.photos));
-    window.addEventListener("scroll", scrollEvent)
-    return () => window.removeEventListener("scroll", scrollEvent);
+    window.addEventListener("scroll", handleAutoLoadOnScroll)
+    return () => window.removeEventListener("scroll", handleAutoLoadOnScroll);
   }, []);
 
-  function scrollEvent() {
+  function handleAutoLoadOnScroll() {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
 
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;

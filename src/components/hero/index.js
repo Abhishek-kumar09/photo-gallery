@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { Container, Grid, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Typography } from "@mui/material";
 import { useState } from "react";
 import { fetchResource } from "../../utils/fetch";
 import CustomizedSearchBase from "../searchBox";
@@ -23,16 +22,15 @@ const Header = styled('header')({
 });
 
 export default function HeroComponent() {
-  const [queriedPhotos, setQueriedPhotos] = useState([1, 2, 3, 4, 5]);
+  const [queriedPhotos, setQueriedPhotos] = useState(null);
 
   function onSubmit(query) {
     const BASE_URL = `https://api.pexels.com/v1/search?query=${query}&per_page=1`
     fetchResource(BASE_URL).then(({photos}) => {
-      console.log({photos})
       setQueriedPhotos(photos[0]?.src?.medium)
     })    
   }
-  
+
   return (
     <Header className="App-header">
       <Container style={{ zIndex: 2, padding: "24px" }}  >

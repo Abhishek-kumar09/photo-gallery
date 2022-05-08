@@ -1,5 +1,4 @@
 export async function fetchResource(url, tooManyReq, handleTooManyReq) {
-  console.log({ p: process.env })
   return fetch(url,
     {
       method: "GET",
@@ -9,7 +8,7 @@ export async function fetchResource(url, tooManyReq, handleTooManyReq) {
     })
     .then(res => {
       if (res.ok) {
-        if (tooManyReq) {
+        if (tooManyReq && handleTooManyReq) {
           handleTooManyReq(false);
         }
         return res.json()

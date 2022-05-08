@@ -30,7 +30,6 @@ export default function VideoTab() {
     <div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
         {videos.map(video => {
-          console.log({video})
           return (<Box >
             <video muted preload='none' loop autoPlay style={{maxWidth: "30vw"}}>
               <source src={video.video_files[3].link} type="video/mp4" />
