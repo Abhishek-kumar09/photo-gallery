@@ -6,22 +6,30 @@ import { fetchResource } from '../../utils/fetch';
 import { debounceFn } from '../../utils/debounceFn';
 
 export default function TabOne() {
-  const [photos, setPhotos] = React.useState(null);
+  const [photos, setPhotos] = React.useState([]);
+  const [updatePhotos, setUpdatedPhotos] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [tooManyReqError, setTooManyReqError] = React.useState(false);
   const CURATED_PHOTOS_URL = "https://api.pexels.com/v1/curated?per_page=49";
   const photoUrl = (pNum) => CURATED_PHOTOS_URL + `&page=${pNum || pageNumber}`;
-  const debouncedFetchFn = debounceFn(fetchFn, 1000);
-  
+  const debouncedFetchFn = debounceFn(fetchFn, 2000);
+
+  React.useEffect(()=>{
+    if(updatePhotos) {
+      setPhotos([...photos, ...updatePhotos])
+      setLoading(false);
+    }
+  },[updatePhotos])
+
   function fetchFn() {
     if (!loading) {
       setLoading(true);
-      fetchResource(photoUrl(pageNumber + 1), setTooManyReqError).then(newPhotos => {
-        setPhotos([...photos, ...newPhotos.photos]);
-        setLoading(false);
+      fetchResource(photoUrl(pageNumber + 1), tooManyReqError ,setTooManyReqError).then(newPhotos => {
+        setUpdatedPhotos(newPhotos.photos);
         setPageNumber(pageNumber + 1);
       }).catch(e => {
+        console.error(e);
         setLoading(false);
       })
     }
